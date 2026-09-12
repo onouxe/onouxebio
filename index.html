@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONOUXE // Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/png" href="/onouxe.jpg" sizes="32x32" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050203;
+            --red-main: #ff003c;
+            --red-dark: #990024;
+            --red-glow: rgba(255, 0, 60, 0.35);
+            --glass-bg: rgba(20, 8, 12, 0.45);
+            --glass-border: rgba(255, 0, 60, 0.15);
+            --glass-hover: rgba(255, 0, 60, 0.08);
+            --text: #f5f5f7;
+            --text-dim: #a19da5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Анимированные темно-красные размытые сферы */
+        .glow-sphere {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.55;
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+
+        .glow-1 {
+            top: -15%;
+            left: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, var(--red-main) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        .glow-2 {
+            bottom: -15%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--red-dark) 0%, rgba(0,0,0,0) 70%);
+            animation-delay: -6s;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 60px) scale(1.12); }
+        }
+
+        /* Glassmorphism Навигация */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1100px;
+            padding: 14px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(12, 4, 6, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 0, 60, 0.05);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--red-main);
+            text-shadow: 0 0 12px var(--red-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--red-main);
+            text-shadow: 0 0 10px var(--red-glow);
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hero секция */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 100px;
+        }
+
+        .badge {
+            background: rgba(255, 0, 60, 0.08);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            color: #ff4d73;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.15);
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--red-main);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--red-main);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1.5px;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, #ffffff 0%, var(--red-main) 60%, var(--red-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(255, 0, 60, 0.3));
+        }
+
+        .hero-desc {
+            max-width: 580px;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--red-main), var(--red-dark));
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px var(--red-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 60, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-hover);
+            border-color: var(--red-main);
+            color: var(--red-main);
+            transform: translateY(-3px);
+        }
+
+        /* Секция навыков */
+        .section {
+            padding: 120px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 48px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 28px;
+            background: linear-gradient(to bottom, var(--red-main), var(--red-dark));
+            border-radius: 4px;
+            box-shadow: 0 0 12px var(--red-glow);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 32px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .skill-card:hover {
+            background: var(--glass-hover);
+            border-color: rgba(255, 0, 60, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px var(--red-glow);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .skill-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .skill-percent {
+            color: var(--red-main);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--red-main), var(--red-dark));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 15px var(--red-main);
+        }
+
+        .skill-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* Терминал */
+        .terminal-box {
+            background: rgba(10, 3, 5, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 0, 60, 0.05);
+        }
+
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .t-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .t-red { background: #ff003c; box-shadow: 0 0 8px #ff003c; }
+        .t-yellow { background: #ffbd2e; }
+        .t-green { background: #27c93f; }
+
+        .terminal-title {
+            margin-left: 10px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            min-height: 200px;
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff4d73;
+        }
+
+        .terminal-line {
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+
+        .terminal-prompt {
+            color: var(--red-main);
+            font-weight: 700;
+        }
+
+        /* Scroll Reveal анимации */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Футер */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            background: rgba(5, 2, 3, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 95%;
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+
+    <nav>
+        <div class="logo">
+            <span>//</span> ONOUXE
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#terminal">Terminal</a></li>
+            <li><a href="https://t.me/onouxe" target="_blank">Telegram</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="about">
+            <div class="badge reveal">
+                <span class="badge-dot"></span> NODE STATUS: ONLINE
+            </div>
+            <h1 class="reveal">FRONTEND<br><span class="highlight">DEVELOPER</span></h1>
+            <p class="hero-desc reveal">Разрабатываю современные, быстрые и визуально эстетичные веб-интерфейсы.
+                Специализируюсь на верстке, скриптах и стильном интерактивном дизайне.</p>
+            <div class="btn-group reveal">
+                <a href="https://t.me/onouxe" target="_blank" class="btn btn-primary">СВЯЗАТЬСЯ В ТГ</a>
+                <a href="#skills" class="btn btn-secondary">СПОСОБНОСТИ</a>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="section" id="skills">
+            <div class="section-title reveal">TECH_STACK</div>
+            <div class="skills-grid">
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">HTML5</span>
+                        <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-progress="95%"></div>
+                    </div>
+                    <p class="skill-desc">Семантическая, адаптивная и чистая разметка. Соблюдение стандартов SEO и
+                        доступности.</p>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">CSS3 / SCSS</span>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-progress="90%"></div>
+                    </div>
+                    <p class="skill-desc">Сложная CSS-анимация, Flexbox, Grid, микро-взаимодействия и кастомные темы.</p>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">JavaScript</span>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-progress="80%"></div>
+                    </div>
+                    <p class="skill-desc">Интерактивный UI, работа с DOM, асинхронные запросы (Fetch/API), алгоритмы.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminal Section -->
+        <section class="section" id="terminal">
+            <div class="section-title reveal">SYSTEM_LOGS</div>
+            <div class="terminal-box reveal">
+                <div class="terminal-header">
+                    <div class="t-btn t-red"></div>
+                    <div class="t-btn t-yellow"></div>
+                    <div class="t-btn t-green"></div>
+                    <span class="terminal-title">bash — onouxe@darknet-node:~</span>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="terminal-line"><span class="terminal-prompt">root@onouxe:~#</span> init system_check</div>
+                    <div class="terminal-line" style="color: #a19da5;">[OK] Core modules loaded.</div>
+                    <div class="terminal-line" style="color: #a19da5;">[OK] Telegram routing active (@onouxe).</div>
+                    <div class="terminal-line"><span class="terminal-prompt">root@onouxe:~#</span> <span id="type-text"></span></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 // DESIGN BY ONOUXE</p>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal Animations on Scroll
+        const reveals = document.querySelectorAll('.reveal');
+
+        function revealOnScroll() {
+            const windowHeight = window.innerHeight;
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Animated Progress Bars
+        const fills = document.querySelectorAll('.progress-fill');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('data-progress');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        fills.forEach(fill => observer.observe(fill));
+
+        // Terminal Typewriter Effect
+        const textToType = "echo 'Ready to build awesome web products.'";
+        const typeTarget = document.getElementById('type-text');
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < textToType.length) {
+                typeTarget.innerHTML += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 80);
+            }
+        }
+        setTimeout(typeWriter, 1000);
+    </script>
+</body>
+
+</html>
